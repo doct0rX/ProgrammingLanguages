@@ -131,16 +131,61 @@ fun oldest(dates: (int*int*int) list) =
     then NONE
     else
         let
-            val previousDate = hd(dates)
-        in
-            if null (tl(dates))
-            then SOME (hd dates)
-            else
-                if (is_older(hd(dates), (hd(tl(dates)))) = true andalso null (tl(tl(dates))))
-                then SOME (hd dates)
+            fun oldest_inner(dates: (int*int*int) list, firstDate: (int*int*int)) = 
+                if null (tl dates)
+                then SOME firstDate
                 else
-                    if (is_older(hd(dates), (hd(tl(dates)))) = false andalso null (tl(tl(dates))))
-                    then SOME (hd(tl(dates)))
-                    else NONE
+                    if is_older(hd(dates), hd(tl(dates)))
+                    then oldest_inner(tl(dates), hd(tl(dates)))
+                    else
+                        if hd(dates) = hd(tl(dates)) andalso null (tl(tl(dates)))
+                        then NONE
+                        else oldest_inner(tl(dates), hd(dates))
+        in
+            oldest_inner(dates, hd(dates))
         end
-    
+
+(* 12. Challenge Problem: Functions number_in_months_challenge and dates_in_months_challenge
+that are like your solutions to problems 3 and 5 except having a month in the second argument multiple
+times has no more effect than having it once. *)
+fun number_in_months_challenge(dates: (int*int*int) list, months: int list) = 
+    number_in_months(dates, months)
+
+fun dates_in_months_challenge(dates: (int*int*int) list, months: int list) = 
+    dates_in_months(dates, months)
+
+(* 13. Challenge Problem: Function reasonable_date that takes a date and determines if it
+describes a real date in the common era. A “real date” has a positive year (year 0 did not exist), a
+month between 1 and 12, and a day appropriate for the month. Solutions should properly handle leap
+years. Leap years are years that are either divisible by 400 or divisible by 4 but not divisible by 100.
+(Do not worry about days possibly lost in the conversion to the Gregorian calendar in the Late 1500s. *)
+fun reasonable_date(year: int, month: int, day: int) =
+    if year < 1 orelse month < 1 orelse day < 1
+    then false
+    else
+        if month > 12
+        then false
+            else
+                let
+                    val monthsOfAYaar = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                    fun rightDayInMonth(counter: int, monthDays: int) =
+                        if counter = month andalso day = monthDays
+                        then true
+                        else
+                            if counter = month andalso day < monthDays
+                            then true
+                            else
+                                if counter = month andalso day > monthDays
+                                then false
+                                else
+                                    if null (tl monthsOfAYaar)
+                                    then false
+                                    else rightDayInMonth(counter+1, hd(tl(monthsOfAYaar)))
+                in
+                    if month = 2 andalso day = 29
+                    then true
+                    else 
+                        if rightDayInMonth(1, hd(monthsOfAYaar))
+                        then true
+                        else false
+                end

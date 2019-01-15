@@ -184,8 +184,5 @@ fun reasonable_date(year: int, month: int, day: int) =
                 in
                     if month = 2 andalso day = 29
                     then true
-                    else 
-                        if rightDayInMonth(1, hd(monthsOfAYaar))
-                        then true
-                        else false
+                    else rightDayInMonth(1, hd(monthsOfAYaar))
                 end

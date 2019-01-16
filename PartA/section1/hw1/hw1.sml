@@ -5,11 +5,11 @@
 the first argument is a date that comes before the second argument. (If the two dates are the same,
 the result is false.) *)
 fun is_older((a:int, b:int, c:int), (x:int, y:int, z:int)) =
-    if (z > c)
+    if (x > a)
     then true
-    else if (z = c andalso y > b)
+    else if (x = a andalso y > b)
         then true
-        else if (y = b andalso x > a)
+        else if (y = b andalso z > c)
             then true
             else false
 
@@ -88,32 +88,40 @@ You should return an int n such that the first n elements of the list add to les
 n + 1 elements of the list add to sum or more. *)
 fun number_before_reaching_sum(sum: int, sums: int list) =
     let
-        fun  number_before_reaching_sum_inner(sums: int list, totalSums: int, beforeReaching: int) =
+        fun  number_before_reaching_sum_inner(localSums: int list, totalSums: int, beforeReaching: int) =
+                if (totalSums = sum orelse totalSums > sum)
+                then beforeReaching
+                else 
+                    if null (tl localSums) 
+                    then beforeReaching
+                    else number_before_reaching_sum_inner(tl(localSums), totalSums+hd(tl(localSums)), beforeReaching+1)
+    in
         if null sums
         then 0
         else
             if sum = 0
             then 0
-            else
-                if (totalSums = sum orelse totalSums > sum)
-                then beforeReaching
-                else number_before_reaching_sum_inner(tl(sums), totalSums+hd(tl(sums)), hd(sums))
-    in
-        number_before_reaching_sum_inner(sums, hd(sums), hd(sums))
+            else number_before_reaching_sum_inner(sums, hd(sums), 0)
     end
 
  (* 9. Function what_month that takes a day of year (i.e., an int between 1 and 365) and returns
 what month that day is in (1 for January, 2 for February, etc.). *)
 fun what_month(dayOfAYear: int) = 
     let
-        val monthsOfAYaar   =   [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        val monthsOfAYear   =   [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
         val monthsOfALeapYear = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-        fun  what_month_inner(totalDays: int, month: int) =
-            if (totalDays > dayOfAYear orelse totalDays = dayOfAYear)
-            then month
-            else what_month_inner(totalDays+hd(monthsOfAYaar), month+1)
+        fun  what_month_inner(monthsOfAYear_: int list, remainingDays: int, month: int) = 
+            if dayOfAYear = 0
+            then 0
+            else
+                if dayOfAYear = hd(monthsOfAYear_) orelse remainingDays < hd(monthsOfAYear_)
+                then month
+              (*   else 
+                    if null (tl monthsOfAYear_)
+                    then month *)
+                    else what_month_inner(tl(monthsOfAYear_), remainingDays-hd(monthsOfAYear_), month+1)
     in
-       what_month_inner(0, 0)
+        what_month_inner(monthsOfALeapYear, dayOfAYear, 1)
     end
 
 (* 10. Function month_range that takes two days of the year day1 and day2 and returns an int list
@@ -131,16 +139,16 @@ fun oldest(dates: (int*int*int) list) =
     then NONE
     else
         let
-            fun oldest_inner(dates: (int*int*int) list, firstDate: (int*int*int)) = 
-                if null (tl dates)
+            fun oldest_inner(datesIn: (int*int*int) list, firstDate: (int*int*int)) = 
+                if null (tl datesIn)
                 then SOME firstDate
                 else
-                    if is_older(hd(dates), hd(tl(dates)))
-                    then oldest_inner(tl(dates), hd(tl(dates)))
+                    if is_older(hd(tl(datesIn)), hd(datesIn))
+                    then oldest_inner((tl(datesIn)), hd(tl(datesIn)))
                     else
-                        if hd(dates) = hd(tl(dates)) andalso null (tl(tl(dates)))
+                        if hd(datesIn) = hd(tl(datesIn)) andalso null (tl(tl(datesIn)))
                         then NONE
-                        else oldest_inner(tl(dates), hd(dates))
+                        else oldest_inner(tl(datesIn), hd(datesIn))
         in
             oldest_inner(dates, hd(dates))
         end
@@ -148,11 +156,39 @@ fun oldest(dates: (int*int*int) list) =
 (* 12. Challenge Problem: Functions number_in_months_challenge and dates_in_months_challenge
 that are like your solutions to problems 3 and 5 except having a month in the second argument multiple
 times has no more effect than having it once. *)
-fun number_in_months_challenge(dates: (int*int*int) list, months: int list) = 
-    number_in_months(dates, months)
+fun number_in_months_challenge(dates: (int*int*int) list, months: int list) =
+    let
+        val innerMonths = []
+        fun notRepeatedMonths(months: int list) =
+            if null months
+        then innerMonths
+        else
+            if null (tl months)
+            then innerMonths@months
+            else
+                if hd(months) = hd(tl(months))
+                then hd(tl(months))::innerMonths
+                else hd(months)::innerMonths
+    in
+      number_in_months(dates, notRepeatedMonths(months))
+    end
 
-fun dates_in_months_challenge(dates: (int*int*int) list, months: int list) = 
-    dates_in_months(dates, months)
+fun dates_in_months_challenge(dates: (int*int*int) list, months: int list) =
+    let
+        val innerMonths = []
+        fun notRepeatedMonths(months: int list) =
+            if null months
+        then innerMonths
+        else
+            if null (tl months)
+            then innerMonths@months
+            else
+                if hd(months) = hd(tl(months))
+                then hd(tl(months))::innerMonths
+                else hd(months)::innerMonths
+    in
+      dates_in_months(dates, notRepeatedMonths(months))
+    end
 
 (* 13. Challenge Problem: Function reasonable_date that takes a date and determines if it
 describes a real date in the common era. A “real date” has a positive year (year 0 did not exist), a
@@ -165,24 +201,31 @@ fun reasonable_date(year: int, month: int, day: int) =
     else
         if month > 12
         then false
-            else
-                let
-                    val monthsOfAYaar = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-                    fun rightDayInMonth(counter: int, monthDays: int) =
-                        if counter = month andalso day = monthDays
+        else
+            let
+                val monthsOfAYaar     = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                val monthsOfALeapYear = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                fun workOnYear(counter: int, monthDays: int list) =
+                    if counter = month andalso day = hd(monthDays)
+                    then true
+                    else
+                        if counter = month andalso day < hd(monthDays)
                         then true
                         else
-                            if counter = month andalso day < monthDays
-                            then true
-                            else
-                                if counter = month andalso day > monthDays
-                                then false
-                                else
-                                    if null (tl monthsOfAYaar)
-                                    then false
-                                    else rightDayInMonth(counter+1, hd(tl(monthsOfAYaar)))
-                in
-                    if month = 2 andalso day = 29
-                    then true
-                    else rightDayInMonth(1, hd(monthsOfAYaar))
-                end
+                            if counter = month andalso day > hd(monthDays)
+                            then false
+                            else workOnYear(counter+1, tl(monthDays))
+                fun commonYear() =
+                    workOnYear(1, monthsOfAYaar)
+                fun leapYear() = 
+                    workOnYear(1, monthsOfALeapYear)
+                fun reasonable_date_inner() = 
+                    if year mod 4 = 0 andalso year mod 100 <> 0
+                    then leapYear()
+                    else
+                        if year mod 400 = 0
+                        then leapYear()
+                        else commonYear()
+            in
+                reasonable_date_inner()
+            end

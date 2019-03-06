@@ -90,3 +90,93 @@ exception IllegalMove
  * put your solutions for problem 2 here 
  *)
 
+(* (a) Write a function card_color, which takes a card and returns its color (spades and clubs are black,diamonds and hearts 
+are red). Note: One case-expression is enough. *)
+fun card_color(card, _) = 
+  case card of
+    (Clubs | Spades) => Black
+    | _ => Red
+
+(* (b) Write a function card_value, which takes a card and returns its value (numbered cards have theirnumber as the value, 
+aces are 11, everything else is 10). Note: One case-expression is enough. *)
+fun card_value(_, card) =
+  case card of
+      Num x => x
+    | Ace => 11
+    | _   => 10
+
+(* (c) Write a function remove_card, which takes a list of cards cs, a card c, and an exception e. 
+It returns alist that has all the elements of cs except c. If c is in the list more than once, remove only the first one.
+If c is not in the list, raise the exception e.  *)
+fun remove_card(cs, c, e) =
+  let
+    fun remove(checked_cards, cs) =
+      case cs of
+        []    => checked_cards
+      | x::xs' => if (x = c)
+                 then checked_cards@xs'
+                 else remove(x::checked_cards, xs')
+  
+    val new_list = remove([], cs)
+  
+    fun check_exp() = 
+      if (new_list = cs)
+      then raise e
+      else new_list
+    in
+      check_exp()
+  end
+
+(* (d) Write a function all_same_color, which takes a list of cards and returns true
+   if all the cards in thelist are the same color.  *)
+fun all_same_color(cs) = 
+  case cs of
+      [] => true
+    | x::[] => true
+    | f::s::xs' => if card_color(f) = card_color(s)
+                  then all_same_color(s::xs')
+                  else false
+                
+(* (e) Write a function sum_cards, which takes a list of cards and returns the sum of their values.  *)
+fun sum_cards(cs) = 
+  let 
+    fun sum(values, cards) = 
+      case cards of
+        [] => values
+       | x::xs' => sum(card_value(x) + values, xs')
+  in
+    sum(0, cs)
+  end
+
+(* (f) Write a function score, which takes a card list (the held-cards) and an int (the goal) 
+  and computesthe score as described. *)
+fun score(cs, goal) = 
+  let 
+    val sum_val = sum_cards(cs)
+    val is_sum_greater = sum_val > goal
+    val is_same_color = all_same_color(cs)
+  in
+    case (is_sum_greater, is_same_color) of
+        (true, false)  => 3 * (sum_val - goal)
+     |  (true, true)   => 3 * (sum_val - goal) div 2
+     |  (false, false) => goal - sum_val
+     |  (false, true)  => (goal - sum_val) div 2
+  end
+
+(* (g) Write a function officiate, which “runs a game.” It takes a card list (the card-list) a move list(what the player “does” at each point),
+    and an int (the goal) and returns the score at the end of thegame after processing (some or all of) the moves in the move list in order. *)
+fun officiate(cs, ms, goal) =
+  let
+    fun run(cs, ms, hs) = 
+      case ms of
+        [] => score(hs, goal)
+      | m::ms' => case m of
+                      Discard d => run(cs, ms', remove_card(hs, d, IllegalMove))
+                    | _         => case cs of
+                                        []      => score(hs, goal)
+                                      | c::cs'  => if sum_cards(hs) > goal
+                                                   then score(c::hs, goal)
+                                                   else run(cs', ms', c::hs)
+  in
+    run(cs, ms, [])
+  end

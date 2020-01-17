@@ -41,7 +41,7 @@ Currently, this repo has 3 major parts you may be interested in and I will give 
 
 - Part B: Racket and Dynamically Typed Language
 
-  - [X] [Week 1 - Homework 4 - Racket, Delaying Evaluation, Memoization, Macros](./PartB/section5/hw4)
+  - [X] [Week 1 - Homework 4 - Racket, Delaying Evaluation, Memoization, Macros](./PartB/section5/hw4): 97/100 something incorrect in (list-nth-mod) function; [cute dog from the auto-grader](https://drive.google.com/file/d/0B5sUgbs6aDNpSWhSZzVtcktDaTA/view?pref=2&pli=1)
   - [ ] [Week 2 - Homework 5 - Structs, Implementing Languages, Static vs. Dynamic Typing]()
   - [ ] [Week 3 - Section Quiz]()
 

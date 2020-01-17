@@ -57,6 +57,7 @@
 
    ; while-less test
    (check-equal? (while-less 7 do (begin (set! a (+ a 1)) a)) #t "while-less test")
+   (check-equal? (while-less 9 do (begin (set! a (+ a 1)) a)) #t "while-less test")
    
    ))
 

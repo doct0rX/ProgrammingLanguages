@@ -101,11 +101,17 @@
         
 ;; Problem 3
 
-(define (ifaunit e1 e2 e3) "CHANGE")
+(define (ifaunit e1 e2 e3) (ifgreater (isaunit e1) (int 0) e2 e3))
 
-(define (mlet* lstlst e2) "CHANGE")
+(define (mlet* lstlst e2) (if (null? lstlst)
+                              e2
+                              (mlet (caar lstlst) (cdar lstlst) (mlet* (cdr lstlst) e2))))
 
-(define (ifeq e1 e2 e3 e4) "CHANGE")
+(define (ifeq e1 e2 e3 e4) (mlet "_x" e1
+                                 (mlet "_y" e2
+                                       (if (equal? (var "_x") (var "_y"))
+                                           e3
+                                           e4))))
 
 ;; Problem 4
 

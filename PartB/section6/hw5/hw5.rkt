@@ -22,7 +22,20 @@
 
 ;; Problem 1
 
-;; CHANGE (put your solutions here)
+;; (a) Racket function racketlist->mupllist that takes a Racket list and produces
+;; an analogous mupl list with the same elements in the same order.
+(define (racketlist->mupllist rktlst)
+  (cond ((null? rktlst) (aunit))
+        ((list? rktlst) (apair (car rktlst) (racketlist->mupllist (cdr rktlst))))
+        (#t (error "wrong argument"))))
+
+;; (b) Racket function mupllist->racketlist that takes a mupl list and produces an analogous Racket list
+;; with the same elements in the same order.
+(define (mupllist->racketlist mupllst)
+  (cond ((aunit? mupllst) null)
+        ((apair? mupllst) (cons (apair-e1 mupllst) (mupllist->racketlist (apair-e2 mupllst))))
+        (#t (error "wrong argument"))))
+
 
 ;; Problem 2
 

@@ -1,6 +1,6 @@
 # Programming Languages
 
-<div style="text-align:right">by <b>University of Washington</b></br></div>
+by **University of Washington**
 
 [This course](https://www.coursera.org/learn/programming-languages) is an introduction to the basic concepts of programming languages, with a strong emphasis on **functional programming**. The course uses the languages ML, Racket, and Ruby as vehicles for teaching the concepts, but the real intent is to teach enough about how any language “fits together” to make you more effective programming in any language -- and in learning new ones.
 
@@ -35,8 +35,8 @@ Currently, this repo has 3 major parts you may be interested in and I will give 
 
 - Part B: Racket and Dynamically Typed Language
 
-  - [X] [Week 1 - Homework 4 - Racket, Delaying Evaluation, Memoization, Macros](./PartB/section5/hw4): 97/100 something incorrect in (list-nth-mod) function; [cute dog from the auto-grader](https://drive.google.com/file/d/0B5sUgbs6aDNpSWhSZzVtcktDaTA/view?pref=2&pli=1)
-  - [X] [Week 2 - Homework 5 - Structs, Implementing Languages, Static vs. Dynamic Typing](./PartB/section5/hw4): 99/100 ifeq: resulting expression evaluates to e3 if e1 and e2 evaluate to equal integers ('(ifeq (int 5) (int 5) (int 0) (int 1)) should result in MUPL that evaluates to (int 0) but resulted in (mlet "_x" (int 5) (mlet "_y" (int 5) (int 1)))) [incorrect answer];
+  - [X] [Week 1 - Homework 4 - Racket, Delaying Evaluation, Memoization, Macros](./PartB/section5/hw4): 97/100 _something incorrect in (list-nth-mod) function;_ [cute dog from the auto-grader](https://drive.google.com/file/d/0B5sUgbs6aDNpSWhSZzVtcktDaTA/view?pref=2&pli=1)
+  - [x] [Week 2 - Homework 5 - Structs, Implementing Languages, Static vs. Dynamic Typing](./PartB/section5/hw4): 99/100 _ifeq: resulting expression evaluates to e3 if e1 and e2 evaluate to equal integers ('(ifeq (int 5) (int 5) (int 0) (int 1)) should result in MUPL that evaluates to (int 0) but resulted in (mlet "_x" (int 5) (mlet "_y" (int 5) (int 1)))) [incorrect answer];_
   - [ ] [Week 3 - Section Quiz]()
 
 - Part C: Ruby and Object-Oriented Language

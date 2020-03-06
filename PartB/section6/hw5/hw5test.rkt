@@ -5,7 +5,7 @@
 
 ;; Be sure to put your homework file in the same folder as this test file.
 ;; Uncomment the line below and, if necessary, change the filename
-;;(require "hw5")
+(require "hw5.rkt")
 
 (require rackunit)
 

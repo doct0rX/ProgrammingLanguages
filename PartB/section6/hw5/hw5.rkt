@@ -61,7 +61,38 @@
                (int (+ (int-num v1) 
                        (int-num v2)))
                (error "MUPL addition applied to non-number")))]
-        ;; CHANGE add more cases here
+        ;; adding my cases here
+        [(int? e) e]
+        [(closure? e) e]
+        [(aunit? e) e]
+        [(apair? e) (apair (eval-under-env (apair-e1 e) env) (eval-under-env (apair-e2 e) env))]
+        [(ifgreater? e) (let ([v1 (eval-under-env (ifgreater-e1 e) env)]
+                              [v2 (eval-under-env (ifgreater-e2 e) env)])
+                          (if (and (int? v1) (int? v2))
+                              (if (> (int-num v1) (int-num v2)) (eval-under-env (ifgreater-e3 e) env)
+                                  (eval-under-env (ifgreater-e4 e) env))
+                              (error "MUPL ifgreater applied to non-number")))]
+        [(mlet? e) (eval-under-env (mlet-body e)
+                                   (cons (cons (mlet-var e) (eval-under-env (mlet-e e) env)) env))]
+        [(fst? e) (let ([val (eval-under-env (fst-e e) env)])
+                    (if (apair? val) (apair-e1 val)
+                        (error "MUPL fst applied to non-pair")))]
+        [(snd? e) (let ([val (eval-under-env (snd-e e) env)])
+                    (if (apair? val) (apair-e2 val)
+                      (error "MUPL snd applied to non-pair")))]
+        [(isaunit? e) (if (aunit? (eval-under-env (isaunit-e e) env)) (int 1) (int 0))]
+        [(fun? e) (closure env e)]
+        [(call? e) (let ([close (eval-under-env (call-funexp e) env)])
+                     (if (closure? close)
+                         (let ([fx (closure-fun close)])
+                           (let ([arg (eval-under-env (call-actual e) env)])
+                             (if (fun-nameopt fx);new env 
+                                 (eval-under-env (fun-body fx) (cons (cons (fun-nameopt fx) close);then
+                                                                     (cons (cons (fun-formal fx) arg)
+                                                                           (closure-env close))))
+                                 (eval-under-env (fun-body fx) (cons (cons (fun-formal fx) arg)
+                                                                     (closure-env close))))))
+                           (error "MUPL call applied to non-closure")))];else
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 ;; Do NOT change

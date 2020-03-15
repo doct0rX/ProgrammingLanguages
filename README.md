@@ -41,6 +41,6 @@ Currently, this repo has 3 major parts you may be interested in and I will give 
 
 - Part C: Ruby and Object-Oriented Language
 
-  - [ ] [Week 1 - Homework 6 - Ruby, Object-Oriented Programming, Subclassing]()
+  - [X] [Week 1 - Homework 6 - Ruby, Object-Oriented Programming, Subclassing](./PartC/section8/hw6)
   - [ ] [Week 2 - Homework 7 - Program Decomposition, Mixins, Subtyping, and More]()
   - [ ] [Week 3 - Final Exam]()

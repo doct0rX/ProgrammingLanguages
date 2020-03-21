@@ -20,6 +20,8 @@ datatype geom_exp =
 	 | Let of string * geom_exp * geom_exp (* let s = e1 in e2 *)
 	 | Var of string
 (* CHANGE add shifts for expressions of the form Shift(deltaX, deltaY, exp *)
+	 (* TODO *)
+	 | Shift of 
 
 exception BadProgram of string
 exception Impossible of string
@@ -198,3 +200,19 @@ fun eval_prog (e,env) =
 (* CHANGE: Add a case for Shift expressions *)
 
 (* CHANGE: Add function preprocess_prog of type geom_exp -> geom_exp *)
+fun preprocess_prog e =
+	case e of
+	LineSegment(x1, y1, x2, y2) =>
+	if real_close(x1, x2)
+	then if real_close(y1, y2)
+		 then point(x1, y1)
+		 else if y1 > y2
+		 then LineSegment (x2, y2, x1, y1)
+		 else e
+	else if x1 > x2 
+	then LineSegment(x2, y2, x1, y1)
+	else e
+  | Let(s, e1, e2) => Let(s, preprocess_prog e1, preprocess_prog e2)
+  | Intersect(e1, e2) => Intersect(preprocess_prog e1, preprocess_prog e2)
+  | Shift(dx, dy, e1) => Shift(dx, dy, preprocess_prog e1)
+  | _ => e 

@@ -124,8 +124,8 @@ class GeometryExpression
       @x = x
       @y = y
     end
-    def shift(dx, dy)
-      point.new(x + dx, y + dy)
+    def shift(dx,dy)
+      Point.new(x + dx, y+ dy)
     end
     def intersect other
       other.intersectPoint self

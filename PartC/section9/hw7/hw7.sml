@@ -20,7 +20,6 @@ datatype geom_exp =
 	 | Let of string * geom_exp * geom_exp (* let s = e1 in e2 *)
 	 | Var of string
 (* CHANGE add shifts for expressions of the form Shift(deltaX, deltaY, exp *)
-	 (* TODO *)
 	 | Shift of real * real * geom_exp
 
 exception BadProgram of string
@@ -67,19 +66,19 @@ fun intersect (v1,v2) =
 				then v1
 				else NoPoints
 
-      | (Point (x,y), Line (m,b)) => if real_close(y, m * x + b)
+     | (Point (x,y), Line (m,b)) => if real_close(y, m * x + b)
 				     then v1
 				     else NoPoints
 
-      | (Point (x1,_), VerticalLine x2) => if real_close(x1,x2)
+     | (Point (x1,_), VerticalLine x2) => if real_close(x1,x2)
 					   then v1
 					   else NoPoints
 
-      | (Point _, LineSegment seg) => intersect(v2,v1)
+     | (Point _, LineSegment seg) => intersect(v2,v1)
 
-      | (Line _, Point _) => intersect(v2,v1)
+     | (Line _, Point _) => intersect(v2,v1)
 
-      | (Line (m1,b1), Line (m2,b2)) =>
+     | (Line (m1,b1), Line (m2,b2)) =>
 	if real_close(m1,m2) 
 	then (if real_close(b1,b2)
 	      then v1 (* same line *)
@@ -193,8 +192,8 @@ fun eval_prog (e,env) =
       | LineSegment _  => e
       | Var s => 
 	(case List.find (fn (s2,v) => s=s2) env of
-	     NONE => raise BadProgram("var not found: " ^ s)
-	   | SOME (_,v) => v)
+	    NONE => raise BadProgram("var not found: " ^ s)
+	  | SOME (_,v) => v)
       | Let(s,e1,e2) => eval_prog (e2, ((s, eval_prog(e1,env)) :: env))
       | Intersect(e1,e2) => intersect(eval_prog(e1,env), eval_prog(e2, env))
 (* CHANGE: Add a case for Shift expressions *)

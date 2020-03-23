@@ -226,6 +226,34 @@ class GeometryExpression
     def initialize x
       @x = x
     end
+    
+    def shift(dx,dy)
+      VerticalLine.new(x + dx)
+    end
+    
+    def intersect other
+      other.intersectVerticalLine self
+    end
+    
+    def intersectPoint p
+      p.intersectVerticalLine self
+    end
+    
+    def intersectLine line
+      line.intersectVerticalLine self
+    end
+    
+    def intersectVerticalLine vline
+      if real_close(x, vline.x)
+        self
+      else
+        NoPoints.new
+      end
+    end
+    
+    def intersectWithSegmentAsLineResult seg
+      seg
+    end
   end
   
   class LineSegment < GeometryValue
@@ -240,6 +268,66 @@ class GeometryExpression
       @y1 = y1
       @x2 = x2
       @y2 = y2
+    end
+
+    def preprocess_prog
+      if real_close(x1, x2) && real_close(y1, y2)
+        Point.new(x1, y1)
+      elsif real_close(x1, x2) && y1 > y2 or x1 > x2
+        LineSegment.new(x2, y2, x1, y1)
+      else
+        self
+      end
+    end
+    
+    def shift(dx,dy)
+      LineSegment.new(x1 + dx, y1 + dy, x2 + dx, y2 + dy)
+    end
+    
+    def intersect other
+      other.intersectLineSegment self
+    end
+    
+    def intersectPoint p
+      p.intersectLineSegment self
+    end
+    
+    def intersectLine line
+      line.intersectLineSegment self
+    end
+    
+    def intersectVerticalLine vline
+      vline.intersectLineSegment self
+    end
+    
+    def intersectWithSegmentAsLineResult seg
+      seg1 = [x1, y1, x2, y2]
+      seg2 = [seg.x1, seg.y1, seg.x2, seg.y2]
+      if real_close(x1, x2) # the segments are one a vertical line
+        aXstart, aYstart, aXend, aYend,
+        bXstart, bYstart, bXend, bYend = y1 < seg.y1 ? seg1 + seg2 : seg2 + seg1
+        if real_close(aYend, bYstart)
+          Point.new(aXend, aYend)
+        elsif aYend < bYstart
+          NoPoints.new
+        elsif aYend > bYend
+          LineSegment.new(bXstart, bYstart, bXend, bYend)
+        else
+          LineSegment.new(bXstart, bYstart, aXend, aYend)
+        end
+      else # the segments are one non-vertical line
+        aXstart, aYstart, aXend, aYend,
+        bXstart, bYstart, bXend, bYend = x1 < seg.x1 ? seg1 + seg2 : seg2 + seg1
+        if real_close(aXend, bXstart)
+          Point.new(aXend, aYend)
+        elsif aXend < bXstart
+          NoPoints.new
+        elsif aXend > bXend
+          LineSegment.new(bXstart, bYstart, bXend, bYend)
+        else
+          LineSegment.new(bXstart, bYstart, aXend, aYend)
+        end
+      end
     end
   end
   

@@ -169,7 +169,7 @@ fun intersect (v1,v2) =
 			then LineSegment(bXstart,bYstart,bXend,bYend) (* b inside a *)
 			else LineSegment(bXstart,bYstart,aXend,aYend) (* overlapping *)
 		    end	
-	    end						
+	    end
 	  | _ => raise Impossible "bad result from intersecting with a line")
       | _ => raise Impossible "bad call to intersect: only for shape values"
 

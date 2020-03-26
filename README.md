@@ -35,7 +35,9 @@ Currently, this repo has 3 major parts you may be interested in and I will give 
 
 - Part B: Racket and Dynamically Typed Language
 
-  - [X] [Week 1 - Homework 4 - Racket, Delaying Evaluation, Memoization, Macros](./PartB/section5/hw4): 97/100 _something incorrect in (list-nth-mod) function;_ [cute dog from the auto-grader](https://drive.google.com/file/d/0B5sUgbs6aDNpSWhSZzVtcktDaTA/view?pref=2&pli=1)
+  - [X] [Week 1 - Homework 4 - Racket, Delaying Evaluation, Memoization, Macros](./PartB/section5/hw4): 97/100 
+  > _something incorrect in (list-nth-mod) function;_ 
+  [cute dog from the auto-grader](https://drive.google.com/file/d/0B5sUgbs6aDNpSWhSZzVtcktDaTA/view?pref=2&pli=1)
   - [X] [Week 2 - Homework 5 - Structs, Implementing Languages, Static vs. Dynamic Typing](./PartB/section6/hw5): 99/100 
   > *ifeq: resulting expression evaluates to e3 if e1 and e2 evaluate to equal integers ('(ifeq (int 5) (int 5) (int 0) (int 1)) should result in MUPL that evaluates to (int 0) but resulted in (mlet "_x" (int 5) (mlet "_y" (int 5) (int 1)))) [incorrect answer];*
   - [X] Week 3 - Section Quiz
@@ -45,5 +47,6 @@ Currently, this repo has 3 major parts you may be interested in and I will give 
   - [X] [Week 1 - Homework 6 - Ruby, Object-Oriented Programming, Subclassing](./PartC/section8/hw6) 100/100
   - [X] [Week 2 - Homework 7 - Program Decomposition, Mixins, Subtyping, and More](./PartC/section9/hw7) 99/100 [69/70 for Ruby && 30/30 for SML] 
   > Ruby output: *intersect_methods(Line#intersect): Line.new(5.0,0.0).intersect(LineSegment.new(1.0,5.0,2.0,2.0)) should equal Point.new(1.0,5.0) (actual: NoPoints.new) [incorrect answer]
-  Because the auto-grader gave a score above 60, here is the link to a message from a very cute dog: https://drive.google.com/file/d/0B5sUgbs6aDNpSXBkMVZmelJJX1U/view?pref=2&pli=1*
-  - [ ] [Week 3 - Final Exam]()
+  
+  > Because the auto-grader gave a score above 60, here is the link to a message from a very cute dog: https://drive.google.com/file/d/0B5sUgbs6aDNpSXBkMVZmelJJX1U/view?pref=2&pli=1*
+  - [X] Week 3 - Final Exam

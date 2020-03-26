@@ -12,6 +12,15 @@ The course is divided into three Coursera courses: [Part A](https://www.coursera
 
 --------
 
+## [Certificates](./certs)
+
+here is shareable links to certificates on coursera website
+#### [Part A Cert](https://coursera.org/share/a0459180241db9b6754f25ddec9c21ec)
+#### [Part B Cert](https://coursera.org/share/e7cb80791124a0a6d466e0fa1750fc7d)
+#### [Part C Cert]() in progress
+
+--------
+
 ## Introduction
 
 This repo contains all my work for this course. All the code base, quiz questions, screenshot, and images, are taken from, unless specified, [Programming Languages on Coursera](https://www.coursera.org/learn/programming-languages). The course is also avilable on [washington.edu](https://courses.cs.washington.edu/courses/cse341/16sp/).
